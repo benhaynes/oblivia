@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="msapplication-tap-highlight" content="no" />
+		<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons-1.4.5.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.5.min.css" />
+		<title>Oblivia</title>
+	</head>
+	<body>
+		<div class="app">
+			<div class="drawer drawer-full">
+				<div class="title animate nopacity fade-in-1">
+					<h1>Oblivia</h1>
+					<h4 class="tagline">A World of Knowledge</h4>
+					<div class="time-left hidden">3 seconds left!</div>
+					<svg class="timer-container" width="36" height="36" viewbox="0 0 36 36"><path id="timer" transform="translate(18, 18) scale(.14)"/></svg>
+					<img src="img/images-svg/timer.svg" class="timer-bg hidden">
+					<img src="img/images-svg/planet.svg" class="planet hidden">
+				</div>
+				<div class="choose-character-title nopacity">
+					<div class="text-red"><h5>Who do you want to be?</h5></div>
+				</div>
+				<div class="quiz animate nopacity hidden">
+					<div class="question"></div>
+					<div class="answer answer-1" data-answer="a"><span class="bold">A: </span><span class="answer-text"></span></div>
+					<div class="answer answer-2" data-answer="b"><span class="bold">B: </span><span class="answer-text"></span></div>
+					<div class="answer answer-3" data-answer="c"><span class="bold">C: </span><span class="answer-text"></span></div>
+					<div class="answer answer-4" data-answer="d"><span class="bold">D: </span><span class="answer-text"></span></div>
+				</div>
+				<div class="serrated"></div>
+			</div>
+			<div class="choose-character">
+				<div class="character-start" data-avatar="chuck"><img src="img/images-svg/character_chuck.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="becky"><img src="img/images-svg/character_becky.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="vlad"><img src="img/images-svg/character_vlad.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="bleep"><img src="img/images-svg/character_bleep.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="boo"><img src="img/images-svg/character_boo.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="yass"><img src="img/images-svg/character_yass.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="whisp"><img src="img/images-svg/character_whisp.svg" class="svg svg-red"></div>
+				<div class="character-start" data-avatar="chip"><img src="img/images-svg/character_chip.svg" class="svg svg-red"></div>
+			</div>
+			<div class="world">
+				<div class="player active"><img src="img/images-svg/character_chuck.svg" class="svg svg-red"><div class="character-bg"></div></div>
+				<div class="map"></div>
+			</div>
+			<div class="alert hidden"></div>
+			<div class="alert-bg hidden"></div>
+		</div>
+		<script type="text/javascript" src="cordova.js"></script>
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<!-- <script src="js/jquery.mobile-1.4.5.min.js"></script> -->
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript">
+			app.initialize();
+		</script>
+	</body>
+</html>

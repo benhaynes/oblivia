@@ -1,0 +1,608 @@
+
+//////////////////////////////////////////////////////////////////////////////
+// Fonts
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100;
+  src: url('../fonts/Roboto-Thin.ttf') format('truetype'); // url('../fonts/Roboto-Thin.woff2') format('woff2'),
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../fonts/Roboto-Light.ttf') format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/Roboto-Medium.ttf') format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Mixins
+
+// Force GPU
+// -webkit-transform: translateZ(0);
+// -moz-transform: translateZ(0);
+// -ms-transform: translateZ(0);
+// -o-transform: translateZ(0);
+// transform: translateZ(0);
+
+@mixin transition ($prop: all, $time: 200ms, $ease: ease-in-out) {
+	-webkit-transition: $prop $time $ease;
+	-moz-transition: $prop $time $ease;
+	-o-transition: $prop $time $ease;
+	-ms-transition: $prop $time $ease;
+	transition: $prop $time $ease;
+}
+@mixin scale ($factor) {
+	-webkit-transform: scale($factor);
+	-moz-transform: scale($factor);
+	-ms-transform: scale($factor);
+	-o-transform: scale($factor);
+}
+@mixin clearfix{
+	zoom:1;
+	&:before, &:after{ content:""; display:table; }
+	&:after{ clear: both; }
+}
+@mixin border-radius ($radius: 4px) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	border-radius: $radius;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+}
+@mixin transform-origin ($x: bottom, $y: left) {
+	transform-origin: $x $y;
+	-ms-transform-origin: $x $y;
+	-webkit-transform-origin: $x $y;
+}
+@mixin pulse ($speed: 2s) {
+	-webkit-animation: pulsate $speed ease-out;
+	-webkit-animation-iteration-count: infinite; 
+}
+@-webkit-keyframes pulsate {
+	0% {-webkit-transform: scale(1, 1);}
+	50% {-webkit-transform: scale(0.8, 0.8);}
+	100% {-webkit-transform: scale(1, 1);}
+}
+@mixin pulseWin ($speed: 2s) {
+	-webkit-animation: pulsateWin $speed ease-out;
+	-webkit-animation-iteration-count: infinite; 
+}
+@-webkit-keyframes pulsateWin {
+	0% {-webkit-transform: scale(1, 1);}
+	50% {-webkit-transform: scale(1.2, 1.2);}
+	100% {-webkit-transform: scale(1, 1);}
+}
+@mixin pulseOpacity ($speed: 2s) {
+	-webkit-animation: pulsateOpacity $speed ease-out;
+	-webkit-animation-iteration-count: infinite; 
+}
+@-webkit-keyframes pulsateOpacity {
+	0% {-webkit-transform: scale(1.1, 1.1); opacity: 0.4;}
+	50% {-webkit-transform: scale(1.3, 1.3); opacity: 0.2;}
+	100% {-webkit-transform: scale(1.1, 1.1); opacity: 0.4;}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Variables
+
+$game-height: 560px;
+$peek-height: 220px;
+$edge-padding: 20px;
+
+$drawer-height: 74px;
+
+$white: #FFFFFF;
+$black: #444444;
+$background: #DDDDDD;
+$dark-gray: #777777;
+$light-gray: #9B9B9B;
+$blue: #03A9F4;
+$green: #8BC34A;
+$red: #C2185B;
+$yellow: #F5A623;
+
+.svg-red path {
+	fill: $red;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+::-webkit-scrollbar { 
+	display: none; 
+}
+
+* {
+	-webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+	-webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+	-webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+	-webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+	// background-color:#E4E4E4;
+	// background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+	// background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+	// background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+	// background-image:-webkit-gradient(
+	// 	linear,
+	// 	left top,
+	// 	left bottom,
+	// 	color-stop(0, #A7A7A7),
+	// 	color-stop(0.51, #E4E4E4)
+	// );
+	// background-attachment:fixed;
+	background-color: $background;
+	// font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	font-family: 'Roboto', sans-serif;
+	font-size:12px;
+	height:100%;
+	margin:0px;
+	padding:0px;
+	text-transform:uppercase;
+	width:100%;
+	color: $black;
+	overflow: hidden;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Portrait layout (default)
+
+.app {
+	.alert-bg {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		opacity: 0.8;
+		background-color: $white;
+		z-index: 9998;
+	}
+	.alert {
+		@include border-radius(4px);
+		position: fixed;
+		top: 100px;
+		left: 40px;
+		right: 40px;
+		background-color: $white;
+		color: $red;
+		border: 2px $red solid;
+		text-align: center;
+		padding: 30px 20px 30px 20px;
+		z-index: 9999;
+		font-size: 14px;
+		line-height: 20px;
+		font-weight: 500;
+		text-transform: none;
+		h1 {
+			margin-bottom: 30px;
+		}
+	}
+	.drawer {
+		@include transition (all, 400ms);
+		background-color: $white;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: $drawer-height;
+		z-index: 10;
+		&.drawer-hide {
+			height: 0;
+		}
+		&.drawer-full { 
+			height: 100%;
+			.title {
+				top: 50%;
+				margin-top: -100px;
+				h1 {
+					font-size: 60px;
+				}
+			}
+		}
+		&.drawer-peek {
+			height: 80%;
+			.title {
+				top: 50%;
+				margin-top: -100px;
+				h1 {
+					font-size: 60px;
+				}
+			}
+		}
+		.title {
+			position: absolute;
+			top: 0%;
+			left: 0;
+			width: 100%;
+			margin-top: 16px;
+			z-index: 2;
+			&.sticky {
+				top: 0% !important;
+				margin-top: 16px !important;
+				h1 {
+					font-size: 40px;
+				}
+			}
+		}
+		.timer-container {
+			display: block;
+			position: fixed;
+			top: 24px;
+			right: 32px;
+			#timer {
+				fill: $red;
+			}
+		}
+		.timer-bg {
+			width: 60px;
+			position: fixed;
+			top: $edge-padding / 2;
+			right: $edge-padding;
+		}
+		.planet {
+			width: 60px;
+			position: fixed;
+			top: $edge-padding / 2;
+			left: $edge-padding;
+			cursor: pointer;
+			&.small {
+				width: 36px;
+				top: 22px;
+				left: 32px;
+			}
+		}
+		.time-left {
+			position: fixed;
+			top: 61px;
+			right: 31px;
+			width: 36px;
+			color: $red;
+			text-align: center;
+			font-size: 12px;
+    		font-weight: 500;
+		}
+		.choose-character-title {
+			@include transition (all, 400ms);
+			position: absolute;
+			bottom: $edge-padding - 10;
+			right: $edge-padding;
+			left: $edge-padding;
+			text-align: center;
+			opacity: 1.0;
+		}
+		.quiz {
+			@include transition (all, 400ms);
+			position: fixed;
+			top: 80px;
+			left: 20px;
+			right: 20px;
+			border-top: 1px dotted lighten($black, 60%);
+			padding-top: 20px;
+			opacity: 1.0;
+			&.answered {
+				.answer {
+					background-color: $red;
+					color: $white;
+					&.correct {
+						background-color: $green;
+					}
+				}
+			}
+			.question {
+				font-size: 16px;
+				line-height: 24px;
+				color: $black;
+				text-align: left;
+				width: 100%;
+				margin: 0 0 20px 0;
+				text-transform: none;
+				letter-spacing: 1px;
+				font-weight: 400;
+			}
+			.answer {
+				@include transition (all, 400ms);
+				font-size: 18px;
+				line-height: 21px;
+				color: $light-gray;
+				text-align: left;
+				margin: 0;
+				text-transform: none;
+				letter-spacing: 1px;
+				font-weight: 300;
+				padding: 20px;
+				cursor: pointer;
+				&:active {
+					background-color: $dark-gray;
+					color: $white;
+				}
+			}
+		}
+	}
+	.choose-character {
+		position: fixed;
+		bottom: 10px;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 100px;
+		overflow-x: scroll;
+		white-space: nowrap;
+		z-index: 3;
+		.character-start {
+			@include transition (all, 200ms);
+			width: 80px;
+			margin-left: 10px;
+			margin-right: 10px;
+			display: inline-block;
+			position: relative;
+			cursor: pointer;
+			&:hover {
+				@include scale (1.1);
+			}
+			&.active {
+				//
+			}
+			.svg {
+				position: absolute;
+				width: 80px;
+				height: 80px;
+				top: 0;
+				left: 0;
+				z-index: 2;
+			}
+		}
+	}
+	.world {
+		position: fixed;
+		top: $drawer-height;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 2;
+		overflow: auto;
+		.player {
+			@include scale (1.3);
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			z-index: 3;
+			&.active {
+				.character-bg {
+					@include pulseOpacity (2s);
+				}
+			}
+			.svg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 2;
+			}
+			.character-bg {
+				@include scale (1.5);
+				@include border-radius(30px);
+				background-color: $red;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
+		}
+		.map {
+			@include transition (all, 400ms);
+			position: absolute;
+			top: 30px;
+			left: 20px;
+			z-index: 2;
+			&.global {
+				@include scale (.332);
+				@include transform-origin (top, left);
+				//top: -546px;
+				.dot {
+					&.active {
+						border: none;
+					}
+				}
+			}
+			.dot {
+				//@include transition (all, 2000ms);
+				@include border-radius(20px);
+				position: absolute;
+				width: 10px;
+				height: 10px;
+				background-color: $white;
+				opacity: 0.0;
+				&.hint {
+					opacity: 0.3;
+				}
+				&.show {
+					opacity: 1.0;
+				}
+				&.grass {
+					background-color: $green;
+				}
+				&.water {
+					background-color: $blue;
+				}
+				&.stone {
+					background-color: $dark-gray;
+				}
+				&.active {
+					@include pulse (2s);
+					border: 2px $white solid;
+					cursor: pointer;
+				}
+				&.won {
+					background-color: $red;
+				}
+				&.incorrect {
+					opacity: 0.0 !important; // Needs a new style...
+				}
+				&.fringe {
+					opacity: 0.2 !important; // Needs a new style...
+				}
+				&.win {
+					background-color: $yellow;
+					@include pulseWin (1s);
+				}
+			}
+		}
+	}
+}
+
+// Landscape layout (with min-width)
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+	.app {
+		background-position:left center;
+		padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+		margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+									  /* offset horizontal: half of image width and text area width */
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+h1 {
+	@include transition (all, 400ms);
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	font-size: 40px;
+	text-align: center;
+	width: 100%;
+	margin: 0;
+}
+h2 {
+	//	
+}
+h3 {
+	//
+}
+h4 {
+	font-size: 18px;
+	line-height: 21px;
+	color: $light-gray;
+	text-align: center;
+	width: 100%;
+	margin: 0;
+	text-transform: none;
+	letter-spacing: 1px;
+	font-weight: 100;
+}
+h5 { // Info and helper text
+	font-size: 16px;
+	line-height: 18px;
+	text-align: center;
+	width: 100%;
+	margin: 0;
+	text-transform: none;
+	letter-spacing: 1px;
+	font-weight: 400;
+}
+.text-red {
+	color: $red;
+}
+button {
+	@include transition (all, 200ms);
+	@include border-radius (4px);
+	outline: none;
+	padding: 20px 40px 20px 40px;
+	border: none;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	font-size: 20px;
+	text-align: center;
+	margin: 30px auto 0;
+	display: block;
+	letter-spacing: 1px;
+	cursor: pointer;
+	opacity: 1.0;
+	&.red {
+		background-color: $red;
+		color: $white;
+		&:active {
+			background-color: darken($red, 5%);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+.hidden {
+	display: none !important;
+}
+.nopacity {
+	opacity: 0 !important;
+}
+.opacity {
+	opacity: 1.0;
+}
+.animate {
+	@include transition (all, 400ms);
+}
+.bold {
+	font-weight: 400;
+}
+.serrated {
+	position: absolute;
+	bottom: -20px;
+	left: 0;
+	right: 0;
+	height: 0;
+	padding-top: 20px;
+	text-align: center;
+}
+.serrated:before {
+	background: linear-gradient(-135deg, #ffffff 10px, transparent 0), linear-gradient(135deg, #ffffff 10px, transparent 0);
+	background-position: left top;
+	background-repeat: repeat-x;
+	background-size: 20px 20px;
+	content: " ";
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 20px;
+}
+
+// @keyframes fade {
+//     from { opacity: 1.0; }
+//     50% { opacity: 0.4; }
+//     to { opacity: 1.0; }
+// }
+ 
+// @-webkit-keyframes fade {
+//     from { opacity: 1.0; }
+//     50% { opacity: 0.4; }
+//     to { opacity: 1.0; }
+// }
+ 
+// .blink {
+//     animation:fade 3000ms infinite;
+//     -webkit-animation:fade 3000ms infinite;
+// }
