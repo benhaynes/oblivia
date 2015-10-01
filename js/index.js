@@ -41,6 +41,28 @@ $(function() {
 
 	// Variables
 	var dots = [],
+		terrain_map = [
+		[1,1,1,1,1,2,2,1,1, 2,2,2,3,3,3,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,1,1,1,1,1,1,1,1, 1,2,2,3,3,1,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,3,1,1,1,1,1,1,2, 2,2,3,1,1,1,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,3,3,3,1,1,1,1,2, 2,1,1,1,1,1,1,1,1, 1,1,1,1,2,2,2,2,2],
+		[3,3,3,3,1,1,1,2,2, 2,1,1,1,1,1,1,1,1, 1,1,1,1,2,2,2,2,2],
+		[3,3,3,1,1,1,1,2,2, 2,2,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
+		[3,3,3,3,1,2,2,2,1, 1,2,2,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
+		[3,3,3,3,2,2,2,2,1, 1,1,2,2,2,1,1,1,1, 1,1,1,1,1,1,1,1,2],
+		[3,3,3,3,2,2,2,2,1, 1,1,1,1,2,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,3,1,1,2,2,2,1, 1,1,1,1,1,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,1,1,1,1,2,2,1, 1,1,1,1,1,2,2,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,1,1,1,1,1,2,2,1, 1,1,1,1,1,1,2,2,2, 2,1,1,1,1,1,1,1,1],
+		[3,1,1,3,1,1,2,2,2, 2,2,1,1,1,1,1,1,1, 1,2,1,1,1,1,1,1,1],
+		[3,3,3,3,1,2,2,2,2, 2,2,2,1,1,1,1,1,1, 1,2,2,1,1,1,1,1,1],
+
+		[3,3,3,3,1,2,2,2,2, 1,2,2,2,1,1,1,1,1, 1,2,2,1,1,1,1,1,1],
+		[3,3,3,1,1,2,2,2,2, 1,1,2,2,2,1,1,1,1, 1,2,1,1,1,1,1,1,1],
+		[3,3,1,1,1,2,2,2,1, 1,1,1,2,2,2,1,1,1, 1,2,1,1,1,1,1,1,1],
+		[3,1,1,1,2,2,2,2,1, 1,1,2,2,2,2,2,1,1, 2,1,1,1,1,1,1,1,1],
+		[3,1,2,2,2,2,2,1,1, 1,1,1,1,1,2,2,2,2, 1,1,1,1,1,1,1,1,1],
+		],
 		questions_easy = [{question: 'Taphophobia is the fear of being what?', answers: ['Being buried alive', 'Being alone forever', 'Being wrapped in taffy', 'Being still']},
 					{question: 'Which US state is named on the label of a Jack Daniels bottle?', answers: ['Tennessee', 'Kentucky', 'Indiana', 'Virginia']},
 					{question: 'In US law enforcement agencies, what do the initials stand for in SWAT team?', answers: ['Special Weapons And Tactics', 'Special War Against Terror', 'Special Women\'s Assimilation Test', 'Special Wrongdoers\' Arrest Treatment']},
@@ -87,12 +109,15 @@ $(function() {
 		playerMove = {"col":3, "row":1},
 		fogRange = 5,
 		loader = document.getElementById('timer'), 
+		level_time = 180, // In seconds
+		remaining_time = level_time,
 		α = 360, 
 		π = Math.PI, 
-		timerSpeed = 1000,
 		gamePause = false; // 300 = 5 min
 
 	//////////////////////////////////////////////////////////////////////////////
+
+	//console.table(terrain_map);
 
 	// Map setup
 	map.css('width', (dot_cols * dot_container_size) + 10)
@@ -131,14 +156,14 @@ $(function() {
 	// Player has chosen an avatar
 	$('.character-start').on("click", function() {
 		avatar = $(this).data('avatar');
-		showAlert('<h1>Hurry '+capitalizeFirstLetter(avatar)+'!</h1>Time\'s running out – get to that yellow thing before it leaves you behind!<br><br>Remember, while it\'s easy to travel across grass, swimming is a bit trickier, and the stone mountains can be quite difficult – so choose your path wisely!<button class="red start-game">Got it!</button>');
+		showAlert('<h1>Hurry '+capitalizeFirstLetter(avatar)+'!</h1>You need to get inside – it\'s getting dark... and the creatures of the night are hungry!<br><br>Remember, while it\'s easier to travel across the grassy fields, sometimes it\'s faster to brave the swift waters or trecherous mountains – choose your path wisely!<button class="red start-game">Got it!</button>');
 	});
 
 	$('.alert').on("click", '.start-game', function() {
 		hideAlert();
 
 		positionPlayer();
-		toggleGlobal();
+		//toggleGlobal(); // Start zoomed out
 		$('.choose-character-title').addClass('nopacity');
 		$('.drawer').removeClass('drawer-peek');
 		$('.planet').removeClass('hidden');
@@ -147,7 +172,7 @@ $(function() {
 		hideElement($('.choose-character'));
 
 		setTimeout(function(){
-			toggleGlobal();
+			//toggleGlobal(); // Zoom in to start
 			startTimer();
 		}, 4000);
 	});
@@ -185,7 +210,8 @@ $(function() {
 	// Game timer
 
 	function startTimer() {
-		α--;
+		remaining_time--;
+		α = Math.floor(remaining_time/level_time * 360);
 		α %= 360;
 		var r = ( α * π / 180 ), 
 			x = Math.sin( r ) * 125, 
@@ -199,15 +225,15 @@ $(function() {
 		loader.setAttribute('d', anim);
 		if (gamePause){
 			// TODO
-		} else if(α <= 0){
-			α = 360;
-			showAlert('<h1>Time\'s Up!</h1>The boat has left... without you. Would you like to try again?<button class="red">Play Again</button>');
+		} else if(remaining_time <= 0){
+			remaining_time = level_time;
+			showAlert('<h1>You Dead...</h1>Sorry '+capitalizeFirstLetter(avatar)+', you didn\'t make it to the checkpoint in time... tonight the bears dine on your carpal remnants.<button class="red">Try Again?</button>');
 			$('.time-left').text('').addClass('hidden');
 		} else {
 			//if(α < 30){
-				$('.time-left').text(formatSeconds(α)).removeClass('hidden');
+				$('.time-left').text(formatSeconds(remaining_time)).removeClass('hidden');
 			//}
-			setTimeout(startTimer, timerSpeed); // Redraw
+			setTimeout(startTimer, 1000); // Redraw
 		}
 	}
 
@@ -229,7 +255,7 @@ $(function() {
 
 	function youWin() {
 		gamePause = true;
-		showAlert('<h1>You Won!</h1>Congratulations, you\'ve made it to the boat before it left! Would you like to play again?<button class="red">Play Again</button>');
+		showAlert('<h1>Level 1 Complete!</h1>Congratulations, you\'ve made your way across first map of Oblivia! Are you ready to step things up a notch?<button class="red">Level 2</button>');
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -262,7 +288,7 @@ $(function() {
 			questions = questions_easy;
 		}
 
-		// Randomize qnswer order
+		// Randomize answer order
 		var answerOrder = [1,2,3,4];
 		shuffle(answerOrder);
 
@@ -270,7 +296,13 @@ $(function() {
 		$('.answer').removeClass('correct');
 
 		// Get random question from difficulty level
-		var question = questions[Math.floor(Math.random()*questions.length)];
+		var question_index = Math.floor(Math.random()*questions.length);
+		var question = questions[question_index];
+		
+		// Remove this question (it's been used)
+		if (question_index > -1) {
+			questions.splice(question_index, 1);
+		}
 
 		// Fill in the question/answers
 		$('.question').text(question.question);
@@ -300,8 +332,8 @@ $(function() {
 		$('.player img').attr('src', 'img/images-svg/character_'+avatar+'.svg');
 		
 		// Position
-		$('.player').css('top', (row-1)*dot_container_size + 30)
-			   .css('left', (col-1)*dot_container_size + 20)
+		$('.player').css('top', (row-1)*dot_container_size + 32)
+			   .css('left', (col-1)*dot_container_size + 22)
 			   .css('width', dot_size)
 			   .css('height', dot_size);
 		$('.player .character-bg').css('width', dot_size)
@@ -336,23 +368,34 @@ $(function() {
 		// };
 
 		if($('.dot.win').length <= 0){
-			var win_row = Math.floor(Math.random() * dot_rows) + 1;
-			var win_col = Math.floor(Math.random() * dot_cols) + 1;
+			var win_row = level_height - Math.ceil(Math.random() * 3); // Close to the "bottom"
+			var win_col = Math.floor(Math.random() * level_width) + 1;
 			var win_dot = dots[win_row][win_col]['dot'];
-
 			win_dot.addClass('win').css('opacity', 1);
 		}
 
 		mapSpawn = setInterval(function(){
-			var terrain_chance = (Math.floor(Math.random() * 100) + 1);
-			if(terrain_chance < 70){
+			// var terrain_chance = (Math.floor(Math.random() * 100) + 1);
+			// if(terrain_chance < 70){
+			// 	var terrain = 'grass';
+			// } else if(terrain_chance < 90){
+			// 	var terrain = 'water';
+			// } else {
+			// 	var terrain = 'stone';
+			// }
+
+			var dot = $('.dot.default.visible').random();
+			var this_row = dot.data('row');
+			var this_col = dot.data('col');
+			var this_terrain = terrain_map[this_row-1][this_col-1];
+			if(this_terrain == 1){
 				var terrain = 'grass';
-			} else if(terrain_chance < 90){
+			} else if(this_terrain == 2){
 				var terrain = 'water';
 			} else {
 				var terrain = 'stone';
 			}
-			var dot = $('.dot.default.visible').random();
+
 			dot.removeClass('default').addClass(terrain).css('opacity', 1);
 
 			if($('.dot.default.visible').length <= 0){
