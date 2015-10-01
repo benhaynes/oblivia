@@ -36,7 +36,7 @@
     -webkit-transform: scale(0.8, 0.8); }
   100% {
     -webkit-transform: scale(1, 1); } }
-@-webkit-keyframes pulsateWin {
+@-webkit-keyframes pulsateShelter {
   0% {
     -webkit-transform: scale(1, 1); }
   50% {
@@ -357,9 +357,9 @@ body {
         font-size: 35px; }
       .app .world .map .dot.fringe {
         opacity: 0.2 !important; }
-      .app .world .map .dot.win {
+      .app .world .map .dot.shelter {
         background-color: #F5A623; }
-        .app .world .map .dot.win::after {
+        .app .world .map .dot.shelter::after {
           content: "☗";
           position: absolute;
           top: 50%;

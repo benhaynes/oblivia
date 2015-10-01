@@ -37,12 +37,49 @@ var app = {
 
 //////////////////////////////////////////////////////////////////////////////
 
+// Dim screen as you approach nighttime
+// Switch planet icon to map
+// Update house icon to triangle 
+
+
+
+
 $(function() {
 
-	// Variables
+	// Variables 1 = grass, 2 = water, 3 = stone, 4 = shelter
 	var dots = [],
 		terrain_map = [
 		[1,1,1,1,1,2,2,1,1, 2,2,2,3,3,3,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,1,1,1,1,1,1,1,1, 1,2,2,3,3,1,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,3,1,1,1,1,4,1,2, 2,2,3,1,1,1,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,3,3,3,1,1,1,1,2, 2,1,1,1,1,1,1,1,1, 1,1,1,1,2,2,2,2,2],
+		[3,3,3,3,1,1,1,2,2, 2,1,1,1,1,1,1,1,1, 1,1,1,1,2,2,2,2,2],
+		[3,3,3,1,1,1,1,2,2, 2,2,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
+		[3,3,3,3,1,2,2,2,1, 1,2,2,1,1,1,1,1,1, 1,4,1,1,1,1,1,2,2],
+		[3,3,3,3,2,2,2,2,1, 1,1,2,2,2,1,1,1,1, 1,1,1,1,1,1,1,1,2],
+		[3,3,3,3,2,2,2,2,1, 1,1,1,1,2,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,3,1,1,2,2,2,1, 1,1,1,1,1,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,1,1,1,1,2,2,1, 1,1,1,1,1,2,2,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,1,1,1,1,1,2,2,1, 1,1,1,1,1,1,2,2,2, 2,1,1,1,1,1,1,1,4],
+		[3,1,1,3,1,1,2,2,2, 2,2,1,1,4,1,1,1,1, 1,2,1,1,1,1,1,1,1],
+		[3,3,3,4,1,2,2,2,2, 2,2,2,1,1,1,1,1,1, 1,2,2,1,1,1,1,1,1],
+
+		[1,1,1,1,1,2,2,1,1, 2,2,2,3,3,3,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,1,1,1,1,1,1,1,1, 1,2,2,3,3,1,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,3,1,1,1,1,1,1,2, 2,2,3,1,1,1,1,1,1, 1,1,1,1,1,1,2,2,2],
+		[3,3,3,3,1,1,1,1,2, 2,1,1,1,1,1,1,4,1, 1,1,1,1,2,2,2,2,2],
+		[3,3,3,3,1,1,1,4,2, 2,1,1,1,1,1,1,1,1, 1,1,1,1,2,2,2,2,2],
+		[3,3,3,1,1,1,1,2,2, 2,2,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
+		[3,3,3,3,1,2,2,2,1, 1,2,2,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
+		[3,3,4,3,2,2,2,2,1, 1,1,2,2,2,4,1,1,1, 1,1,1,1,1,1,1,1,2],
+		[3,3,3,3,2,2,2,2,1, 1,1,1,1,2,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,3,1,1,2,2,2,1, 1,1,1,1,1,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,1,1,1,1,2,2,1, 1,1,1,1,1,2,2,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,1,1,1,1,1,2,2,1, 1,1,1,1,1,1,2,2,2, 2,1,1,1,4,1,1,1,1],
+		[3,1,1,3,1,1,2,4,2, 2,2,1,1,1,1,1,1,1, 1,2,1,1,1,1,1,1,1],
+		[3,3,3,3,1,2,2,2,2, 2,2,2,1,1,1,1,1,1, 1,2,2,1,1,1,1,1,1],
+
+		[1,1,1,1,1,2,2,1,1, 2,2,2,3,3,4,1,1,1, 1,1,1,1,1,1,2,2,2],
 		[3,1,1,1,1,1,1,1,1, 1,2,2,3,3,1,1,1,1, 1,1,1,1,1,1,2,2,2],
 		[3,3,1,1,1,1,1,1,2, 2,2,3,1,1,1,1,1,1, 1,1,1,1,1,1,2,2,2],
 		[3,3,3,3,1,1,1,1,2, 2,1,1,1,1,1,1,1,1, 1,1,1,1,2,2,2,2,2],
@@ -50,18 +87,12 @@ $(function() {
 		[3,3,3,1,1,1,1,2,2, 2,2,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
 		[3,3,3,3,1,2,2,2,1, 1,2,2,1,1,1,1,1,1, 1,1,1,1,1,1,1,2,2],
 		[3,3,3,3,2,2,2,2,1, 1,1,2,2,2,1,1,1,1, 1,1,1,1,1,1,1,1,2],
-		[3,3,3,3,2,2,2,2,1, 1,1,1,1,2,2,1,1,1, 1,1,1,1,1,1,1,1,1],
+		[3,3,3,3,4,2,2,2,1, 1,1,1,1,2,2,1,1,1, 1,1,1,1,1,1,1,1,1],
 		[3,3,3,1,1,2,2,2,1, 1,1,1,1,1,2,1,1,1, 1,1,1,1,1,1,1,1,1],
 		[3,3,1,1,1,1,2,2,1, 1,1,1,1,1,2,2,1,1, 1,1,1,1,1,1,1,1,1],
 		[3,1,1,1,1,1,2,2,1, 1,1,1,1,1,1,2,2,2, 2,1,1,1,1,1,1,1,1],
 		[3,1,1,3,1,1,2,2,2, 2,2,1,1,1,1,1,1,1, 1,2,1,1,1,1,1,1,1],
-		[3,3,3,3,1,2,2,2,2, 2,2,2,1,1,1,1,1,1, 1,2,2,1,1,1,1,1,1],
-
-		[3,3,3,3,1,2,2,2,2, 1,2,2,2,1,1,1,1,1, 1,2,2,1,1,1,1,1,1],
-		[3,3,3,1,1,2,2,2,2, 1,1,2,2,2,1,1,1,1, 1,2,1,1,1,1,1,1,1],
-		[3,3,1,1,1,2,2,2,1, 1,1,1,2,2,2,1,1,1, 1,2,1,1,1,1,1,1,1],
-		[3,1,1,1,2,2,2,2,1, 1,1,2,2,2,2,2,1,1, 2,1,1,1,1,1,1,1,1],
-		[3,1,2,2,2,2,2,1,1, 1,1,1,1,1,2,2,2,2, 1,1,1,1,1,1,1,1,1],
+		[3,3,3,3,1,2,2,2,2, 2,2,2,1,1,1,1,1,1, 1,2,2,1,1,1,4,1,1],
 		],
 		questions_easy = [{question: 'Taphophobia is the fear of being what?', answers: ['Being buried alive', 'Being alone forever', 'Being wrapped in taffy', 'Being still']},
 					{question: 'Which US state is named on the label of a Jack Daniels bottle?', answers: ['Tennessee', 'Kentucky', 'Indiana', 'Virginia']},
@@ -156,7 +187,7 @@ $(function() {
 	// Player has chosen an avatar
 	$('.character-start').on("click", function() {
 		avatar = $(this).data('avatar');
-		showAlert('<h1>Hurry '+capitalizeFirstLetter(avatar)+'!</h1>You need to get inside – it\'s getting dark... and the creatures of the night are hungry!<br><br>Remember, while it\'s easier to travel across the grassy fields, sometimes it\'s faster to brave the swift waters or trecherous mountains – choose your path wisely!<button class="red start-game">Got it!</button>');
+		showAlert('<h1>Hurry '+capitalizeFirstLetter(avatar)+'!</h1>You need to a shelter fast – it\'s getting dark... and the creatures of the night are hungry!<br><br>Remember, while it\'s easier to travel across the grassy fields, sometimes it\'s faster to brave the swift waters or trecherous mountains – choose your path wisely!<button class="red start-game">Got it!</button>');
 	});
 
 	$('.alert').on("click", '.start-game', function() {
@@ -251,9 +282,9 @@ $(function() {
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	// Win
+	// Shelter
 
-	function youWin() {
+	function reachedShelter() {
 		gamePause = true;
 		showAlert('<h1>Level 1 Complete!</h1>Congratulations, you\'ve made your way across first map of Oblivia! Are you ready to step things up a notch?<button class="red">Level 2</button>');
 	}
@@ -277,8 +308,8 @@ $(function() {
 
 	function loadQuestion() {
 		// Difficulty
-		if(dots[playerMove.row][playerMove.col]['dot'].hasClass('win')){
-			youWin();
+		if(dots[playerMove.row][playerMove.col]['dot'].hasClass('shelter')){
+			reachedShelter();
 			return false;
 		} else if(dots[playerMove.row][playerMove.col]['dot'].hasClass('stone')){
 			questions = questions_difficult;
@@ -367,7 +398,7 @@ $(function() {
 		// 	}
 		// };
 
-		if($('.dot.win').length <= 0){
+		if($('.dot.shelter').length <= 0){
 			var win_row = level_height - Math.ceil(Math.random() * 3); // Close to the "bottom"
 			var win_col = Math.floor(Math.random() * level_width) + 1;
 			var win_dot = dots[win_row][win_col]['dot'];
@@ -392,8 +423,10 @@ $(function() {
 				var terrain = 'grass';
 			} else if(this_terrain == 2){
 				var terrain = 'water';
-			} else {
+			} else if(this_terrain == 3){
 				var terrain = 'stone';
+			} else if(this_terrain == 4){
+				var terrain = 'shelter';
 			}
 
 			dot.removeClass('default').addClass(terrain).css('opacity', 1);
@@ -409,6 +442,12 @@ $(function() {
 		for(row = 1; row <= dot_rows; row++){
 			for(col = 1; col <= dot_cols; col++){
 				var range = Math.abs(row - playerPosition.row) + Math.abs(col - playerPosition.col);
+
+				// Show all shelters
+				if(terrain_map[row-1][col-1] == 4){
+					dots[row][col]['dot'].addClass('visible').removeClass('default').addClass('shelter').css('opacity', 1);
+				}
+
 				if(range <= max_range){
 
 					// Round fog corners

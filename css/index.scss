@@ -88,11 +88,11 @@
 	50% {-webkit-transform: scale(0.8, 0.8);}
 	100% {-webkit-transform: scale(1, 1);}
 }
-@mixin pulseWin ($speed: 2s) {
-	-webkit-animation: pulsateWin $speed ease-out;
+@mixin pulseShelter ($speed: 2s) {
+	-webkit-animation: pulsateShelter $speed ease-out;
 	-webkit-animation-iteration-count: infinite; 
 }
-@-webkit-keyframes pulsateWin {
+@-webkit-keyframes pulsateShelter {
 	0% {-webkit-transform: scale(1, 1);}
 	50% {-webkit-transform: scale(1.2, 1.2);}
 	100% {-webkit-transform: scale(1, 1);}
@@ -478,7 +478,7 @@ body {
 				&.fringe {
 					opacity: 0.2 !important; // Needs a new style...
 				}
-				&.win {
+				&.shelter {
 					background-color: $yellow;
 					&::after { 
 						content: "☗"; // ☢♔⚑☗⌂
@@ -491,7 +491,7 @@ body {
 						color: $white;
 						font-size: 17px;
 					}
-					//@include pulseWin (1s); // Testing performance
+					//@include pulseShelter (1s); // Testing performance
 				}
 			}
 		}
